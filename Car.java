@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
- 
-//I am changing this.
-package driving.simulator.physics;
-
-/**
- *
- * @author Joaquin
- */
 public class Car {
     private int xPos, yPos, xSpeed, ySpeed, width, length;
     

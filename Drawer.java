@@ -1,19 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package driving.simulator.physics;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 
-/**
- *
- * @author Joaquin
- */
 public class Drawer extends JComponent implements Runnable {
     private int width, height;
     private Map map;

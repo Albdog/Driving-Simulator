@@ -1,16 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package driving.simulator.physics;
-
 import java.awt.Graphics2D;
 
-/**
- *
- * @author Joaquin
- */
 public class Map {
     private int width, height;
     private Background background;
