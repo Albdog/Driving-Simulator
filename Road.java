@@ -1,38 +1,37 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class Road {
-    private int mapWidth, mapHeight, LINES_X, LINES_Y;
-    private double FRACTION_OF_MAP;
+    private final double ROAD_WIDTH, ROAD_HEIGHT, LINES_X, LINES_Y, LINE_HEIGHT, LINE_WIDTH, FRACTION_OF_MAP, X_DISPLACEMENT;
     private ArrayList<RoadLine> lines;
-    private double xDisplacement;
     
-    public Road(int w, int h) {
-        mapWidth = w;
-        mapHeight = h;
+    public Road(int mapWidth, int mapHeight) {
+        ROAD_WIDTH = mapWidth;
+        ROAD_HEIGHT = mapHeight;
         FRACTION_OF_MAP = 3.0/4;
         LINES_X = 2;
         LINES_Y = 10;
-        xDisplacement = mapWidth*(1-FRACTION_OF_MAP)/2;
+        LINE_HEIGHT = 30;
+        LINE_WIDTH = 10;
+        X_DISPLACEMENT = ROAD_WIDTH*(1-FRACTION_OF_MAP)/2;
         createLines();
     }
     private void createLines() {
         lines = new ArrayList<RoadLine>();
         
         for(int i = 0; i < LINES_X; i++) {
-            double x = xDisplacement + (i+1)*FRACTION_OF_MAP*mapWidth/(LINES_X + 1);
-            for(int j = 0; j <= LINES_Y; j++) {
-                double y = (j)*1.0*mapHeight/(LINES_Y + 1);
-                lines.add(new RoadLine(x, y));
+            double x = X_DISPLACEMENT + (i+1)*FRACTION_OF_MAP*ROAD_WIDTH/(LINES_X + 1);
+            for(int j = 0; j < LINES_Y; j++) {
+                double y = j*(ROAD_HEIGHT + LINE_HEIGHT)/(LINES_Y);
+                lines.add(new RoadLine(x, y, LINE_WIDTH, LINE_HEIGHT));
             }
         }
-        RoadLine.setRoadHeight(mapHeight);
+        RoadLine.setRoadHeight(ROAD_HEIGHT);
     }
-
+    
     public void draw(Graphics2D g) {
-        Rectangle2D.Double rect = new Rectangle2D.Double(xDisplacement, 0, mapWidth*FRACTION_OF_MAP, mapHeight);
+        Rectangle2D.Double rect = new Rectangle2D.Double(X_DISPLACEMENT, 0, ROAD_WIDTH*FRACTION_OF_MAP, ROAD_HEIGHT);
         g.setPaint(Color.GRAY);
         g.fill(rect);
         

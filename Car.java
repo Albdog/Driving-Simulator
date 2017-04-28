@@ -5,5 +5,4 @@ public class Car {
         xPos = x;
         yPos = y;
     }
-    
 }

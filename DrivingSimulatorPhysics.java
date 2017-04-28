@@ -2,14 +2,14 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class DrivingSimulatorPhysics extends JFrame {
-    private Drawer drawer;
+    private final Drawer drawer;
     private static int width, height;
     
     public DrivingSimulatorPhysics(int w, int h) {
         drawer = new Drawer(w, h);
         width = w;
         height = h;
-        this.add(drawer);
+        add(drawer);
     }
     
     public static void main(String[] args) {
