@@ -20,4 +20,12 @@ public class Map {
     public Road getRoad() {
         return road;
     }
+    
+    public static double getWidth() {
+        return MAP_WIDTH;
+    }
+    
+    public static double getHeight() {
+        return MAP_HEIGHT;
+    }
 }

@@ -3,13 +3,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class Road {
-    private final double ROAD_WIDTH, ROAD_HEIGHT, LINES_X, LINES_Y, LINE_HEIGHT, LINE_WIDTH, FRACTION_OF_MAP, X_DISPLACEMENT;
+    private final double ROAD_WIDTH, ROAD_HEIGHT, LINES_X, LINES_Y, LINE_HEIGHT, LINE_WIDTH, X_DISPLACEMENT;
+    private static final double FRACTION_OF_MAP = 3.0/4;
     private ArrayList<RoadLine> lines;
     
     public Road(int mapWidth, int mapHeight) {
         ROAD_WIDTH = mapWidth;
         ROAD_HEIGHT = mapHeight;
-        FRACTION_OF_MAP = 3.0/4;
         LINES_X = 2;
         LINES_Y = 10;
         LINE_HEIGHT = 30;
@@ -40,5 +40,9 @@ public class Road {
     
     public ArrayList<RoadLine> getLines() {
         return lines;
+    }
+    
+    public static double getFractionOfMap() {
+        return FRACTION_OF_MAP;
     }
 }
