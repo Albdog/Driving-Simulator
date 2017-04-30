@@ -1,15 +1,15 @@
 import java.awt.Graphics2D;
 
 public class Map {
-    private static int MAP_WIDTH, MAP_HEIGHT;
+    private double MAP_WIDTH, MAP_HEIGHT;
     private final Background background;
-    private final Road road;
+    private Road road;
     
-    public Map(int w, int h) {
+    public Map(double w, double h) {
         MAP_WIDTH = w;
         MAP_HEIGHT = h;
         background = new Background(w, h);
-        road = new Road(w, h);
+        road = new Road(MAP_WIDTH/4, 0, MAP_WIDTH/2, MAP_HEIGHT); //default road
     }
     
     public void draw(Graphics2D g) {
@@ -17,15 +17,11 @@ public class Map {
         road.draw(g);
     }
     
+    public void setRoad(Road road) {
+        this.road = road;
+    }
+    
     public Road getRoad() {
         return road;
-    }
-    
-    public static double getWidth() {
-        return MAP_WIDTH;
-    }
-    
-    public static double getHeight() {
-        return MAP_HEIGHT;
     }
 }

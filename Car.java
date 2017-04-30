@@ -11,9 +11,10 @@ public class Car implements Runnable {
     private Road road;
     private boolean direction;
     
-    public Car() {
-        xPos = (Map.getWidth() - Car.getWidth())/2;
-        yPos = 3*Map.getHeight()/4;
+    public Car(Road road) {
+        this.road = road;
+        xPos = road.getXDisplacement() + (road.getWidth() - width)/2;
+        yPos = road.getYDisplacement() + 3*road.getHeight()/4;
         xSpeed = 10;
         ySpeed = 0;
         X_DISPLACEMENT = 1;
@@ -30,8 +31,8 @@ public class Car implements Runnable {
     @Override
     public void run() {
         while(true) {
-            if(xPos <= Map.getWidth()*(1-Road.getFractionOfMap())/2) direction = true;
-            else if(xPos + width >= Map.getWidth() - Map.getWidth()*(1-Road.getFractionOfMap())/2) direction = false;
+            if(xPos <= road.getXDisplacement()) direction = true;
+            else if(xPos + width >= road.getXDisplacement() + road.getWidth()) direction = false;
             
             if(direction) xPos += X_DISPLACEMENT;
             else xPos -= X_DISPLACEMENT;

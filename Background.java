@@ -2,10 +2,10 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Background {
-    private final int MAP_WIDTH, MAP_HEIGHT;
+    private final double MAP_WIDTH, MAP_HEIGHT;
     private final Color BACKGROUND_COLOR;
     
-    public Background(int frameWidth, int frameHeight) {
+    public Background(double frameWidth, double frameHeight) {
         MAP_WIDTH = frameWidth;
         MAP_HEIGHT = frameHeight;
         BACKGROUND_COLOR = Color.BLACK;
