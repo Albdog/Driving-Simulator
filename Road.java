@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Road {
     private final double ROAD_WIDTH, ROAD_HEIGHT, LINES_X, LINES_Y, LINE_HEIGHT, LINE_WIDTH;
     private ArrayList<RoadLine> lines;
-    private double X_DISPLACEMENT, Y_DISPLACEMENT;
+    private final double X_DISPLACEMENT, Y_DISPLACEMENT;
     
     public Road(double xDisplacement, double yDisplacement, double roadWidth, double roadHeight) {
         ROAD_WIDTH = roadWidth;

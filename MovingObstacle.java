@@ -1,5 +1,5 @@
 public class MovingObstacle extends Obstacle {
-    private double X_DISPLACEMENT;
+    private final double X_DISPLACEMENT;
     private boolean direction; //false = left; true = right
     
     public MovingObstacle(double x, double y, double width, double height, Road road, boolean direction) {
@@ -8,9 +8,7 @@ public class MovingObstacle extends Obstacle {
         this.direction = direction;
     }
     
-    @Override
-    public void move() {
-        super.move();
+    public void moveHorizontally() {
         if(getX() <= getRoad().getXDisplacement()) direction = true;
         if(getX() + getWidth() >= getRoad().getXDisplacement() + getRoad().getWidth()) direction = false;
         

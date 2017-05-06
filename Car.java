@@ -46,7 +46,7 @@ public class Car implements Runnable {
     }
     
     public void increaseXSpeed() {
-        if(xSpeed > 0) xSpeed--;
+        if(xSpeed > 1) xSpeed--;
     }
     
     public void decreaseXSpeed() {

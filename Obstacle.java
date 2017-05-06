@@ -32,7 +32,7 @@ public class Obstacle {
         return yPos;
     }
 
-    public void move() {
+    public void moveDown() {
         yPos += Y_DISPLACEMENT;
     }
     

@@ -1,7 +1,7 @@
 import java.awt.Graphics2D;
 
 public class Map {
-    private double MAP_WIDTH, MAP_HEIGHT;
+    private final double MAP_WIDTH, MAP_HEIGHT;
     private final Background background;
     private Road road;
     

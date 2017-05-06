@@ -2,9 +2,10 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class RoadLine {
-    private double xPos, yPos, LINE_WIDTH, LINE_HEIGHT, Y_SPEED;
-    private Color LINE_COLOR;
-    private Road road;
+    private double xPos, yPos;
+    private final double LINE_WIDTH, LINE_HEIGHT, Y_SPEED;
+    private final Color LINE_COLOR;
+    private final Road road;
     
     public RoadLine(double x, double y, double width, double height, Road road) {
         xPos = x;
