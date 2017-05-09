@@ -1,7 +1,13 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package physics;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 public class Obstacle {
     private double xPos, yPos, Y_DISPLACEMENT, width, height;
@@ -18,7 +24,7 @@ public class Obstacle {
     }
 
     public void draw(Graphics2D g) {
-        Ellipse2D.Double circle = new Ellipse2D.Double(xPos, yPos, width, height);
+        Rectangle2D.Double circle = new Rectangle2D.Double(xPos, yPos, width, height);
         
         g.setPaint(Color.BLUE);
         g.fill(circle);
@@ -56,3 +62,4 @@ public class Obstacle {
         return road;
     }
 }
+
