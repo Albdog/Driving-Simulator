@@ -1,30 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package physics;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 
 public class Drawer extends JComponent implements Runnable {
-    private final double FRAME_WIDTH, FRAME_HEIGHT;
-    private Map map;
     private Thread roadThread, carThread, obstacleThread, controlThread;
-    private Car car;
-    private Road road;
-    private ArrayList<Obstacle> obstacles;
-    private final Random random;
+    private final double FRAME_WIDTH, FRAME_HEIGHT;
     private int roadSpeed = 50, currOS = 0;
+    private ArrayList<Obstacle> obstacles;
     private final int OS_FREQUENCY = 400; //OS = Obstacle Spawner
-    private final double sonarMax = 240, sonarMin = 30, roadSpeedMax = 49;
-    private final int middle = 511, directionRange = 200, middleRange = 10;
+    private final Random random;
+    private Road road;
+    private Map map;
+    private Car car;
     
     public Drawer(int frameWidth, int frameHeight) {
         FRAME_WIDTH = frameWidth;
@@ -46,7 +35,8 @@ public class Drawer extends JComponent implements Runnable {
         roadThread = new Thread(this);
         carThread = new Thread(car);
 	obstacleThread = new Thread(new HOMM()); 
-        controlThread = new Thread(new DirectionChanger());
+        //controlThread = new Thread(new DirectionChanger());
+        
         roadThread.start();
         carThread.start();
 	obstacleThread.start();
@@ -57,7 +47,6 @@ public class Drawer extends JComponent implements Runnable {
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         
-        
         map.draw(g2d);
         for(Obstacle o : obstacles) o.draw(g2d);
         car.draw(g2d);
@@ -66,7 +55,6 @@ public class Drawer extends JComponent implements Runnable {
     @Override
     public void run() {
         while(true) {
-            
             currOS = (currOS + 1) % OS_FREQUENCY;;
             if(currOS == 0) spawnObstacle();
             
@@ -80,10 +68,10 @@ public class Drawer extends JComponent implements Runnable {
                 else obstacles.get(i).moveDown();
             }
             
-            //repaint();
+            repaint();
             
             try {
-                Thread.sleep(roadSpeed);
+                Thread.sleep(Adapter.getVerticalThreadTime());
             } catch (InterruptedException ex) {
                 System.err.println("Error in Thread Sleeping");
             }
@@ -92,7 +80,7 @@ public class Drawer extends JComponent implements Runnable {
     private void spawnObstacle() {
         int lines = (int) road.getNumXLine() + 1;
         int position = random.nextInt(lines);
-        boolean goods = false;            	
+        
         if(random.nextInt(2) == 0) {
             boolean dir = random.nextInt(2) == 1;
             obstacles.add(new MovingObstacle(road.getXDisplacement() + position*road.getWidth()/lines + 25,
@@ -100,7 +88,8 @@ public class Drawer extends JComponent implements Runnable {
                                 50, 50, road, dir));
             return;
         }
-
+        
+        boolean goods = false;     
         for(int i = 0; i < lines; i++) {
             if(i == position || random.nextInt(2) == 1) continue;
             obstacles.add(new Obstacle(road.getXDisplacement() + i*road.getWidth()/lines + 25,
@@ -138,7 +127,8 @@ public class Drawer extends JComponent implements Runnable {
     }
     
     private class HOMM implements Runnable {
-        private final int inverseSpeed = 20;
+        private final int obstacleMovementRate = 20; //inverse
+        
         @Override
         public void run() {
             while(true) {
@@ -148,7 +138,7 @@ public class Drawer extends JComponent implements Runnable {
                     }
                 }
                 try {
-                    Thread.sleep(inverseSpeed);
+                    Thread.sleep(obstacleMovementRate);
                 }
                 catch(InterruptedException ex) {
                     System.err.println("Error in Thread Sleping");
@@ -175,69 +165,5 @@ public class Drawer extends JComponent implements Runnable {
         @Override
         public void keyReleased(KeyEvent e) {}
     }
-    
-    
-    
-    private class DirectionChanger implements Runnable {
-
-        @Override
-        public void run() {
-            while(true) {
-                sonarSpeed();
-                wheel();
-                repaint();
-                
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Drawer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
-        private void wheel() {
-            int temp = ArduinoReader.potentialVal;
-            
-            if(Math.abs(temp - middle) <= middleRange) car.moveMiddle();
-            else if(temp <= middle) car.moveLeft();
-            else car.moveRight();
-            
-            
-            if(temp < middleRange - directionRange) temp = middleRange - directionRange;
-            else if(temp > middleRange + directionRange) temp = middleRange + directionRange;
-            else {
-                int range = directionRange - middleRange;
-                
-                int dog = Math.abs(temp - middle)*200/range;
-                
-                temp = dog;
-            }
-            
-        }
-        
-        private void sonarSpeed() {
-            double sonarThing = ArduinoReader.sonarSpeed;
-
-            if(sonarThing > sonarMax) sonarThing = sonarMax;
-            if(sonarThing < sonarMin) sonarThing = sonarMin;
-
-            //1 to 49   roadspeedmax
-            //1 to 250  sonarmax
-            sonarThing = sonarThing*roadSpeedMax/sonarMax;
-            /*
-            sonarThing = sonarMin     30*49/250
-
-
-            sonarMin : slowest        49
-
-            sonarMax : 1
-
-            */
-
-            roadSpeed = (int) sonarThing - 4;
-        }
-        
-    }
-    
     
 }

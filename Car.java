@@ -1,23 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package physics;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class Car implements Runnable {
-
+    public static final char RIGHT = 'R', LEFT = 'L', MIDDLE = 'B';
     private double xPos, yPos;
     private int xSpeed, ySpeed;
     private static final double width = 50, length = 75;
-    public final int minSpeed = 0, maxSpeed = 200;
+    private static final int minSpeed = 0, maxSpeed = 200;
     private final double X_DISPLACEMENT;
     private Road road;
     private char direction;
-    private final char RIGHT = 'R', LEFT = 'L', MIDDLE = 'B';
+    
     
     public Car(Road road) {
         this.road = road;
@@ -26,7 +19,7 @@ public class Car implements Runnable {
         xSpeed = 10;
         ySpeed = 0;
         X_DISPLACEMENT = 1;
-        direction = RIGHT; //false if left, true if right
+        direction = RIGHT;
     }
     
     public void draw(Graphics2D g) {
@@ -43,7 +36,8 @@ public class Car implements Runnable {
             else if(isLeft() && xPos >= road.getXDisplacement()) xPos -= X_DISPLACEMENT;
             
             try {
-                Thread.sleep(maxSpeed - xSpeed);
+//                Thread.sleep(maxSpeed - xSpeed);
+                Thread.sleep(Adapter.getHorizontalThreadTime());
             } catch (InterruptedException ex) {
                 System.err.println("Error in Thread Sleeping");
             }
@@ -92,5 +86,13 @@ public class Car implements Runnable {
     
     public void setSpeed(int speed) {
         xSpeed = speed;
+    }
+    
+    public static int getMaxSpeed() {
+        return maxSpeed;
+    }
+    
+    public static int getMinSpeed() {
+        return minSpeed;
     }
 }
