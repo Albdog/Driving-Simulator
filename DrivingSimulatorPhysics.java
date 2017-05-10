@@ -13,7 +13,7 @@ public class DrivingSimulatorPhysics extends JFrame {
     }
     
     public static void main(String[] args) throws Exception {
-//        DataIn.main(args);
+        DataIn.main(args);
         
         DrivingSimulatorPhysics dsp = new DrivingSimulatorPhysics(400, 600);
         dsp.getContentPane().setPreferredSize(new Dimension(width, height));

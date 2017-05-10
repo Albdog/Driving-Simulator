@@ -2,50 +2,41 @@
 public class Adapter {
     private static final int sonarMax = 240, sonarMin = 30;
     private static final int middle = 511, stationaryRadius = 10, movableRadius = 200;
+    private static final int maxRoadThreadTime = 50, minRoadThreadTime = 1;
+    private static final int maxHorizontalThreadTime = 200, minHorizontalThreadTime = 1;
     
-    
-    private int horizontalSpeed() {
-//        int temp = ArduinoReader.potentialVal;
-        int temp = 0;
-
-        if(temp < stationaryRadius - movableRadius) temp = stationaryRadius - movableRadius;
-        else if(temp > stationaryRadius + movableRadius) temp = stationaryRadius + movableRadius;
+    private static int horizontalSpeedPercentage() {
+        int potentiometer = ArduinoReader.potentialVal;
+        
+        if(potentiometer < middle - movableRadius) potentiometer = middle - movableRadius;
+        else if(potentiometer > middle + movableRadius) potentiometer = middle + movableRadius;
+        else if(Math.abs(potentiometer - middle) <= stationaryRadius) potentiometer = 1; 
         else {
-            int range = movableRadius - stationaryRadius;
-
-            int dog = Math.abs(temp - middle)*200/range;
-
-            temp = dog;
+            double denominator = movableRadius - stationaryRadius;
+            
+            double numerator;
+            if(potentiometer < middle) numerator = potentiometer - (middle - movableRadius);
+            else numerator = potentiometer - (middle + stationaryRadius);
+            
+            potentiometer = (int) (numerator * 100 / denominator);
         }
-
+        return potentiometer;
     }
 
-    private static void verticalSpeed() {
-//        double sonarThing = ArduinoReader.sonarSpeed;
-        double sonarThing = 0;
+    private static int verticalSpeedPercentage() {
+        double sonar = ArduinoReader.sonarSpeed;
 
-        if(sonarThing > sonarMax) sonarThing = sonarMax;
-        if(sonarThing < sonarMin) sonarThing = sonarMin;
+        if(sonar > sonarMax) sonar = sonarMax;
+        if(sonar < sonarMin) sonar = sonarMin;
 
-        //1 to 49   roadspeedmax
-        //1 to 250  sonarmax
-        sonarThing = sonarThing*roadSpeedMax/sonarMax;
-        /*
-        sonarThing = sonarMin     30*49/250
-
-
-        sonarMin : slowest        49
-
-        sonarMax : 1
-
-        */
-
-//        roadSpeed = (int) sonarThing - 4;
+        int sonarRange = sonarMax - sonarMin;
+        int percent = (int) ((sonar - sonarMin)*100/sonarRange);
+        
+        return percent;
     }
     
-    public char getCarDirection() {
-//        int temp = ArduinoReader.potentialVal;
-        int temp = 0; //potentiometer reading
+    public static char getCarDirection() {
+        int temp = ArduinoReader.potentialVal;
         
         if(Math.abs(temp - middle) <= stationaryRadius) return Car.MIDDLE;
         if(temp <= middle) return Car.LEFT;
@@ -53,10 +44,16 @@ public class Adapter {
     }
     
     public static int getVerticalThreadTime() {
-        return 0;
+        int speed = verticalSpeedPercentage() * (maxRoadThreadTime - minRoadThreadTime) / 100;
+
+        return speed + 1;
     }
     
     public static int getHorizontalThreadTime() {
-        return 0;
+        int speed = horizontalSpeedPercentage() * (maxHorizontalThreadTime - minHorizontalThreadTime) / 100;
+        
+//        return speed + 1;
+//        return 10;
+        return speed + 1;
     }
 }

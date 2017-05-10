@@ -32,10 +32,13 @@ public class Car implements Runnable {
     @Override
     public void run() {
         while(true) {
+            direction = Adapter.getCarDirection();
             if(isRight() && xPos + getWidth() < road.getXDisplacement() + road.getWidth()) xPos += X_DISPLACEMENT;
             else if(isLeft() && xPos >= road.getXDisplacement()) xPos -= X_DISPLACEMENT;
             
             try {
+                System.out.println("time: " + Adapter.getHorizontalThreadTime());
+                System.out.println("dir:  " + Adapter.getCarDirection());
 //                Thread.sleep(maxSpeed - xSpeed);
                 Thread.sleep(Adapter.getHorizontalThreadTime());
             } catch (InterruptedException ex) {

@@ -14,6 +14,7 @@ public class Drawer extends JComponent implements Runnable {
     private Road road;
     private Map map;
     private Car car;
+    public static final int maxRoadSpeed = 49;
     
     public Drawer(int frameWidth, int frameHeight) {
         FRAME_WIDTH = frameWidth;
@@ -40,7 +41,7 @@ public class Drawer extends JComponent implements Runnable {
         roadThread.start();
         carThread.start();
 	obstacleThread.start();
-        controlThread.start();
+        //controlThread.start();
     }
     
     @Override
@@ -104,6 +105,27 @@ public class Drawer extends JComponent implements Runnable {
         }
     }
 
+    private class HOMM implements Runnable {
+        private final int obstacleMovementRate = 20; //inverse
+        
+        @Override
+        public void run() {
+            while(true) {
+                for(int i = 0; i < obstacles.size(); i++) {
+                    if(obstacles.get(i).getClass().equals(MovingObstacle.class)) {
+                        ((MovingObstacle) obstacles.get(i)).moveHorizontally();
+                    }
+                }
+                try {
+                    Thread.sleep(obstacleMovementRate);
+                }
+                catch(InterruptedException ex) {
+                    System.err.println("Error in Thread Sleping");
+                }
+            }
+        }
+    }
+    
     private class SpeedChanger implements KeyListener {
         public SpeedChanger() {
             setFocusable(true);
@@ -123,27 +145,6 @@ public class Drawer extends JComponent implements Runnable {
             if(key == KeyEvent.VK_UP && roadSpeed > 1) roadSpeed--;
             else if(key == KeyEvent.VK_DOWN && roadSpeed < 50) roadSpeed++;
             System.out.println("road speed: " + (50 - roadSpeed));
-        }
-    }
-    
-    private class HOMM implements Runnable {
-        private final int obstacleMovementRate = 20; //inverse
-        
-        @Override
-        public void run() {
-            while(true) {
-                for(int i = 0; i < obstacles.size(); i++) {
-                    if(obstacles.get(i).getClass().equals(MovingObstacle.class)) {
-                        ((MovingObstacle) obstacles.get(i)).moveHorizontally();
-                    }
-                }
-                try {
-                    Thread.sleep(obstacleMovementRate);
-                }
-                catch(InterruptedException ex) {
-                    System.err.println("Error in Thread Sleping");
-                }
-            }
         }
     }
     
